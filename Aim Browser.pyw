@@ -865,3 +865,5 @@ if __name__ == "__main__":
     window = AimBrowser()
     window.show()
     sys.exit(app.exec())
+
+# Go visit "https://tinyurl.com/Sams-games" to see more of my apps/games!
