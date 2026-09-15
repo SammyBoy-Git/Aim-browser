@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aim Browser</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #202124;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Aim's Custom Top Bar */
+        #aim-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background: #292a2d;
+            gap: 8px;
+            border-bottom: 1px solid #3c4043;
+        }
+        #aim-url {
+            flex: 1;
+            background: #202124;
+            border: 1px solid #5f6368;
+            border-radius: 4px;
+            color: white;
+            padding: 6px 10px;
+            font-size: 14px;
+            outline: none;
+        }
+        #aim-url:focus {
+            border-color: #8ab4f8;
+        }
+        .aim-btn {
+            background: #3c4043;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .aim-btn:hover {
+            background: #5f6368;
+        }
+        /* Viewport where actual websites will load */
+        #aim-viewport {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="aim-toolbar">
+        <button class="aim-btn" onclick="goBack()">←</button>
+        <button class="aim-btn" onclick="goForward()">→</button>
+        <button class="aim-btn" onclick="reloadPage()">↻</button>
+        <input type="text" id="aim-url" value="https://www.google.com" onkeydown="handleKey(event)">
+        <button class="aim-btn" onclick="navigateTo()">Go</button>
+    </div>
+
+    <!-- Frame simulating website rendering inside your custom UI -->
+    <iframe id="aim-viewport" src="https://www.google.com"></iframe>
+
+    <script>
+        function navigateTo() {
+            const urlInput = document.getElementById('aim-url').value;
+            let target = urlInput;
+            if (!target.startsWith('http://') && !target.startsWith('https://')) {
+                target = 'https://www.google.com/search?q=' + encodeURIComponent(target);
+            }
+            document.getElementById('aim-viewport').src = target;
+        }
+
+        function handleKey(e) {
+            if (e.key === 'Enter') {
+                navigateTo();
+            }
+        }
+
+        function goBack() {
+            document.getElementById('aim-viewport').contentWindow.history.back();
+        }
+
+        function goForward() {
+            document.getElementById('aim-viewport').contentWindow.history.forward();
+        }
+
+        function reloadPage() {
+            document.getElementById('aim-viewport').contentWindow.location.reload();
+        }
+    </script>
+</body>
+</html>
